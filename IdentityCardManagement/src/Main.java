@@ -54,7 +54,7 @@ public class Main {
         out.print("\nInsert your full name: ");
         card.setName(_console.nextLine());
 
-        ICService.add(card);
+        ICService.add(card, special);
 
         out.println("\nCard added.");
         out.println(card);

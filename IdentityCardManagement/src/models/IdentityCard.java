@@ -14,25 +14,30 @@ public class IdentityCard extends Node<IdentityCard> {
     private boolean isCanceled;
 
     public IdentityCard() {
-        id = new Random().nextLong(1000);
+        id = generateId();
         created = LocalDateTime.now();
         isCanceled = false;
     }
 
     public IdentityCard(boolean isSpecial) {
-        id = new Random().nextLong(1000);
+        id = generateId();
         created = LocalDateTime.now();
         isCanceled = false;
+
         this.isSpecial = isSpecial;
     }
 
     public IdentityCard(String name, boolean isSpecial) {
-        id = new Random().nextLong(1000);
+        id = generateId();
         created = LocalDateTime.now();
 
         this.name = name;
         this.isSpecial = isSpecial;
         this.isCanceled = false;
+    }
+
+    private long generateId() {
+        return (long) (Math.random() * 900) + 100;
     }
 
     public boolean isCanceled() {

@@ -31,10 +31,6 @@ public class Node <TObject> {
     }
 
     public void setNext(Node<TObject> next) {
-        if (next == null) {
-            throw new IllegalArgumentException("Next cannot be null!");
-        }
-
         this.next = next;
     }
 }

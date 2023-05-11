@@ -84,29 +84,25 @@ public class SimpleLinkedList <TObject> {
     }
 
     public void removeFirst() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot remove from an empty list.");
-        }
+        if (isEmpty()) return;
 
         first = first.getNext();
         size--;
     }
 
     public void removeLast() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot remove from an empty list.");
-        }
+        if(isEmpty()) return;
 
-        if (size == 1) {
+        if(size == 1)
+        {
             first = null;
         } else {
             Node<TObject> current = first;
 
-            while (current.getNext().getNext() != null) {
+            for(int i = 0; i < size - 2; i++)
                 current = current.getNext();
-            }
 
-            current.setNext(null);
+            current.setNext(current.getNext().getNext());
         }
 
         size--;

@@ -2,37 +2,39 @@ package helpers;
 
 import models.IdentityCard;
 
-import java.util.Arrays;
-
 public class ICService {
     private static final SimpleLinkedList<IdentityCard> _cards = new SimpleLinkedList<>();
 
-    public static void add(IdentityCard card) {
+    public static void add(IdentityCard card, boolean isSpecial) {
+        if(isSpecial) {
+            _cards.addFirst(card);
+            return;
+        }
+
         _cards.addLast(card);
     }
 
     public static IdentityCard find(long id) {
-        var cards = _cards.getAll();
-        return cards.stream().filter(card -> card.getId() == id).findFirst().orElse(null);
+        return _cards.getAll().stream().filter(card -> card.getId() == id).findFirst().orElse(null);
     }
 
     public static boolean remove(long id) {
-        Node<IdentityCard> current = _cards.getFirst();
+        IdentityCard current = _cards.getFirst();
         Node<IdentityCard> previous = null;
 
-        while (current != null) {
-            if (current.getValue().getId() == id) {
+        for(int i = 0; i < _cards.size(); i++) {
+            if (current.getId() == id) {
                 if (previous == null) {
                     _cards.removeFirst();
                 } else {
-                    previous.setNext(current.getNext());
+                    _cards.removeLast();
                 }
 
                 return true;
             }
 
             previous = current;
-            current = current.getNext();
+            current = _cards.getNext();
         }
 
         return false;
@@ -72,8 +74,9 @@ public class ICService {
         for (var card : _cards.getAll()) {
             if(card.getId() == id) {
                 card.setCanceled(false);
-                current.setValue(card);
+                _cards.addLast(card);
 
+                remove(card.getId());
             }
         }
 
