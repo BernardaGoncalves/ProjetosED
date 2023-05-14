@@ -33,10 +33,10 @@ public class ICService {
                 return true;
             }
 
-            if (_cards.size() > 1) {
-                current = _cards.getNext();
-                hasPrevious = true;
-            }
+            if(_cards.getNext() == null) break;
+
+            current = _cards.getNext();
+            hasPrevious = true;
         }
 
         return false;
