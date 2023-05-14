@@ -3,7 +3,6 @@ package models;
 import helpers.Node;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 public class IdentityCard extends Node<IdentityCard> {
     private long id;
@@ -82,7 +81,11 @@ public class IdentityCard extends Node<IdentityCard> {
 
     @Override
     public String toString() {
+        var formattedId = String.format("[%d]", id);
+
         var type = isSpecial ? "[SPECIAL]" : "[REGULAR]";
-        return String.format("%s %d - %s", type, id, name);
+        var status = isCanceled ? "[CANCEL]" : "[ACTIVE]";
+
+        return String.format("%s%s%s - %s", type, status, formattedId, name);
     }
 }

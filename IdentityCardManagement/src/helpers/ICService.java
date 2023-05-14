@@ -19,43 +19,33 @@ public class ICService {
     }
 
     public static boolean remove(long id) {
+        boolean hasPrevious = false;
         IdentityCard current = _cards.getFirst();
-        Node<IdentityCard> previous = null;
 
-        for(int i = 0; i < _cards.size(); i++) {
+        for (int i = 0; i < _cards.size(); i++) {
             if (current.getId() == id) {
-                if (previous == null) {
-                    _cards.removeFirst();
-                } else {
+                if (hasPrevious)  {
                     _cards.removeLast();
+                } else {
+                    _cards.removeFirst();
                 }
 
                 return true;
             }
 
-            previous = current;
-            current = _cards.getNext();
+            if (_cards.size() > 1) {
+                current = _cards.getNext();
+                hasPrevious = true;
+            }
         }
 
         return false;
     }
 
     public static void removeOld(int minute) {
-        Node<IdentityCard> current = _cards.getFirst();
-        Node<IdentityCard> previous = null;
-
-        while (current != null) {
-            if (current.getValue().getCreated().getMinute() < minute) {
-                if (previous == null) {
-                    _cards.removeFirst();
-                    current = _cards.getFirst();
-                } else {
-                    previous.setNext(current.getNext());
-                    current = previous.getNext();
-                }
-            } else {
-                previous = current;
-                current = current.getNext();
+        for (var card : _cards.getAll()) {
+            if(card.getCreated().getMinute() < minute) {
+                remove(card.getId());
             }
         }
     }
@@ -69,14 +59,14 @@ public class ICService {
     }
 
     public static boolean cancel(long id) {
-        Node<IdentityCard> current = _cards.getFirst();
-
         for (var card : _cards.getAll()) {
             if(card.getId() == id) {
-                card.setCanceled(false);
-                _cards.addLast(card);
-
-                remove(card.getId());
+                if(remove(card.getId()))
+                {
+                    card.setCanceled(true);
+                    _cards.addLast(card);
+                    return true;
+                }
             }
         }
 

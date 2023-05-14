@@ -66,7 +66,6 @@ public class SimpleLinkedList <TObject> {
         return cards;
     }
 
-
     public TObject getNext() {
         Node<TObject> current = first;
         return current.getNext().getValue();
